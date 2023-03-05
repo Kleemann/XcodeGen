@@ -61,12 +61,6 @@ class SourceGenerator {
             pbxGroup = getGroup(path: fullLocationPath, mergingChildren: [], createIntermediateGroups: true, hasCustomParent: false, isBaseGroup: true)
         }
         
-        if localPackageGroup == nil && group == nil {
-            let groupName = project.options.localPackagesGroup ?? "Packages"
-            localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
-            rootGroups.insert(localPackageGroup!)
-        }
-        
         let absolutePath = project.basePath + path.normalize()
         
         // Get the local package's relative path from the project root
@@ -83,7 +77,7 @@ class SourceGenerator {
         if let pbxGroup = pbxGroup {
             pbxGroup.children.append(fileReference)
         } else {
-            localPackageGroup!.children.append(fileReference)
+            rootGroups.insert(fileReference)
         }
     }
 
